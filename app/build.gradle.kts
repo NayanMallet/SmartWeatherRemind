@@ -61,4 +61,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.material)
+
+
+    implementation(libs.lottie)
+    implementation(libs.play.services.location)
 }
