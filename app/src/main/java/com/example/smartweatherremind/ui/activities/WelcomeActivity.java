@@ -7,9 +7,14 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartweatherremind.R;
+import com.lottiefiles.dotlottie.core.model.Config;
+import com.lottiefiles.dotlottie.core.util.DotLottieSource;
+import com.lottiefiles.dotlottie.core.widget.DotLottieAnimation;
+import com.dotlottie.dlplayer.Mode;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    private DotLottieAnimation lottieView;
     private Button btnLocation, btnManual;
 
     @Override
@@ -17,17 +22,30 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        // 1. Récupère les vues APRÈS setContentView()
+        lottieView = findViewById(R.id.lottieWelcome);
         btnLocation = findViewById(R.id.btnLocation);
         btnManual = findViewById(R.id.btnManual);
 
+        Config config = new Config.Builder()
+                .autoplay(true)
+                .speed(1f)
+                .loop(true)
+                // TODO: Try using ‘weather_anim.json’ local lottie => Animation always displayed
+                .source(new DotLottieSource.Url("https://lottie.host/e4469863-68cb-49f9-b51c-ae8ce7b5d266/d1o3PSHjrr.lottie"))
+                .useFrameInterpolation(false)
+                .playMode(Mode.FORWARD)
+                .build();
+
+        lottieView.load(config);
+
+        // 3. Boutons
         btnLocation.setOnClickListener(view -> {
-            // Lancer localisation (à implémenter)
             Intent intent = new Intent(this, LocationActivity.class);
             startActivity(intent);
         });
 
         btnManual.setOnClickListener(view -> {
-            // Lancer saisie manuelle (à implémenter)
             Intent intent = new Intent(this, ManualSearchActivity.class);
             startActivity(intent);
         });

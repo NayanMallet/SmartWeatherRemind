@@ -60,9 +60,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(libs.dotlottie)
+
     implementation(libs.material)
-
-
-    implementation(libs.lottie)
     implementation(libs.play.services.location)
 }
