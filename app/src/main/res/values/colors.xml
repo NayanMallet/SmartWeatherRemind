@@ -18,4 +18,7 @@
     <color name="pastel_green_dark">#B2DFDB</color>
     <color name="soft_coral_dark">#FF8A65</color>
     <color name="ocean_blue_background_dark">#0B2D4D</color>
+
+    <color name="glass_background_solid">#0CFFFFFF</color>
+    <color name="glass_background_stroke">#50FFFFFF</color>
 </resources>

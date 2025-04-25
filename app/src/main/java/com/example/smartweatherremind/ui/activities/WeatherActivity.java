@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class WeatherActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
-    private LinearLayout resultLayout;
+    private LinearLayout widgetLayout;
     private TextView cityCountryText, tempText, conditionText;
 
     @Override
@@ -33,7 +33,7 @@ public class WeatherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_weather);
 
         progressBar = findViewById(R.id.progressBar);
-        resultLayout = findViewById(R.id.resultLayout);
+        widgetLayout = findViewById(R.id.widgetLayout);
         cityCountryText = findViewById(R.id.cityCountryText);
         tempText = findViewById(R.id.tempText);
         conditionText = findViewById(R.id.conditionText);
@@ -130,12 +130,12 @@ public class WeatherActivity extends AppCompatActivity {
         tempText.setText(weather.current.temp_c + "°C");
         conditionText.setText(weather.current.condition.text);
 
-        resultLayout.setVisibility(View.VISIBLE);
+        widgetLayout.setVisibility(View.VISIBLE);
     }
 
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        resultLayout.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        widgetLayout.setVisibility(isLoading ? View.GONE : View.VISIBLE);
     }
 
     private void showError() {
