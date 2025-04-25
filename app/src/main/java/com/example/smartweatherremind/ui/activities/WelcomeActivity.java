@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.smartweatherremind.R;
-import com.example.smartweatherremind.ui.dialogs.ManualCityDialogFragment;
 import com.lottiefiles.dotlottie.core.model.Config;
 import com.lottiefiles.dotlottie.core.util.DotLottieSource;
 import com.lottiefiles.dotlottie.core.widget.DotLottieAnimation;
@@ -26,8 +24,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         // 1. Récupère les vues APRÈS setContentView()
         lottieView = findViewById(R.id.lottieWelcome);
-        btnLocation = findViewById(R.id.btnLocation);
         btnManual = findViewById(R.id.btnManual);
+        btnLocation = findViewById(R.id.btnLocation);
 
         Config config = new Config.Builder()
                 .autoplay(true)
@@ -41,8 +39,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
         lottieView.load(config);
 
-        lottieView.setScaleX(1.1f);
-        lottieView.setScaleY(1.1f);
         // 3. Boutons
         btnLocation.setOnClickListener(view -> {
             Intent intent = new Intent(this, LocationActivity.class);
@@ -50,7 +46,8 @@ public class WelcomeActivity extends AppCompatActivity {
         });
 
         btnManual.setOnClickListener(view -> {
-            new ManualCityDialogFragment().show(getSupportFragmentManager(), "manualCity");
+            Intent intent = new Intent(this, ManualSearchActivity.class);
+            startActivity(intent);
         });
     }
 }
