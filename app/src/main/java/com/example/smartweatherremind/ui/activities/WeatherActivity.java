@@ -25,7 +25,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private LinearLayout resultLayout;
-    private TextView cityText, countryText, tempText, conditionText;
+    private TextView cityCountryText, tempText, conditionText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,7 @@ public class WeatherActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
         resultLayout = findViewById(R.id.resultLayout);
-        cityText = findViewById(R.id.cityText);
-        countryText = findViewById(R.id.countryText);
+        cityCountryText = findViewById(R.id.cityCountryText);
         tempText = findViewById(R.id.tempText);
         conditionText = findViewById(R.id.conditionText);
 
@@ -114,9 +113,22 @@ public class WeatherActivity extends AppCompatActivity {
         });
     }
 
+    private String trimCountryDisplay(String country) {
+        if (country.length() > 20 && country.contains(" ")) {
+            String[] parts = country.split(" ");
+            StringBuilder initials = new StringBuilder();
+            for (String part : parts) {
+                if (!part.isEmpty()) {
+                    initials.append(part.charAt(0));
+                }
+            }
+            return initials.toString().toUpperCase(); // (ex: "United States of America" => "USOA")
+        }
+        return country;
+    }
+
     private void displayWeather(WeatherResponse weather) {
-        cityText.setText(weather.location.name);
-        countryText.setText(weather.location.country);
+        cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
         tempText.setText(weather.current.temp_c + "°C");
         conditionText.setText(weather.current.condition.text);
 
