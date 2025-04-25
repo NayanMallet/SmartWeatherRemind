@@ -1,7 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SmartWeatherRemind" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Theme.SmartWeatherRemind" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Couleurs spécifiques pour le dark mode -->
+        <item name="colorPrimary">@color/mint_leaf_dark</item>
+        <item name="colorOnPrimary">@color/cloud_white_dark</item>
+        <item name="colorSecondary">@color/pastel_green_dark</item>
+        <item name="android:colorBackground">@color/ocean_blue_background_dark</item>
+        <item name="android:textColor">@color/charcoal_dark</item>
+        <!-- Ajoute d'autres items ici selon besoin -->
     </style>
 </resources>

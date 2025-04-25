@@ -24,15 +24,15 @@ public class WelcomeActivity extends AppCompatActivity {
 
         // 1. Récupère les vues APRÈS setContentView()
         lottieView = findViewById(R.id.lottieWelcome);
-        btnLocation = findViewById(R.id.btnLocation);
-        btnManual = findViewById(R.id.btnManual);
+        btnLocation = findViewById(R.id.btnManual);
+        btnManual = findViewById(R.id.btnLocation);
 
         Config config = new Config.Builder()
                 .autoplay(true)
                 .speed(1f)
                 .loop(true)
                 // TODO: Try using ‘weather_anim.json’ local lottie => Animation always displayed
-                .source(new DotLottieSource.Url("https://lottie.host/e4469863-68cb-49f9-b51c-ae8ce7b5d266/d1o3PSHjrr.lottie"))
+                .source(new DotLottieSource.Url("https://lottie.host/78f6be34-ef93-439c-8d1f-3843fd57c09a/eON7ajOK0h.lottie"))
                 .useFrameInterpolation(false)
                 .playMode(Mode.FORWARD)
                 .build();

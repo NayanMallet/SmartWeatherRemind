@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="black">#FF000000</color>
-<color name="white">#FFFFFFFF</color>
-<color name="purple_500">#6200EE</color>
-<color name="purple_700">#3700B3</color>
-<color name="teal_200">#03DAC5</color>
+    <!-- Couleurs principales (light mode) -->
+    <color name="mint_leaf">#A3C9A8</color>
+    <color name="cloud_white">#F8F9FA</color>
+    <color name="blush_pink">#F5D0C5</color>
+    <color name="charcoal">#333333</color>
+    <color name="mist_grey">#7C8A97</color>
+    <color name="pastel_green">#A5D6A7</color>
+    <color name="soft_coral">#FFAB91</color>
+
+    <!-- Variantes pour le dark mode -->
+    <color name="mint_leaf_dark">#A3C9A8</color>
+    <color name="cloud_white_dark">#F8F9FA</color>
+    <color name="blush_pink_dark">#FFB6AA</color>
+    <color name="charcoal_dark">#DADADA</color>
+    <color name="mist_grey_dark">#AAB4C3</color>
+    <color name="pastel_green_dark">#B2DFDB</color>
+    <color name="soft_coral_dark">#FF8A65</color>
+    <color name="ocean_blue_background_dark">#0B2D4D</color>
 </resources>

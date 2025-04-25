@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SmartWeatherRemind</string>
+    <string name="welcome_title">Climly</string>
+    <string name="welcome_sub_texte">Pour vous guider, on a juste besoin de savoir où vous êtes.</string>
+    <string name="welcome_gps_button">Ma position</string>
+    <string name="welcome_manual_button">Entrer votre adresse</string>
 </resources>
