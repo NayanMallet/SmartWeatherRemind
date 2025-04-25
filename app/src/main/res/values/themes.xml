@@ -8,4 +8,9 @@
     <item name="android:colorBackground">@color/cloud_white</item>
     <!-- Autres attributs... -->
 </style>
+
+<style name="GlassDialogTheme" parent="Theme.MaterialComponents.Dialog">
+    <item name="android:backgroundDimEnabled">true</item>
+    <item name="android:background">@android:color/transparent</item>
+</style>
 </resources>
