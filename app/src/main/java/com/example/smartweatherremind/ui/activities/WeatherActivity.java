@@ -2,6 +2,7 @@ package com.example.smartweatherremind.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -87,6 +88,8 @@ public class WeatherActivity extends AppCompatActivity {
         WeatherApiService service = RetrofitInstance.getApiService();
         String query = lat + "," + lon;
 
+        Log.d("WeatherActivity", "Query: " + query);
+
         Call<WeatherResponse> call = service.getCurrentWeather(Constants.WEATHER_API_KEY, query, Constants.LANGUAGE);
 
         call.enqueue(new Callback<WeatherResponse>() {
@@ -94,8 +97,10 @@ public class WeatherActivity extends AppCompatActivity {
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("WeatherActivity", "Response: " + response.body());
                     displayWeather(response.body());
                 } else {
+                    Log.d("WeatherActivity", "Response error: " + response.errorBody());
                     showError();
                 }
             }
@@ -103,6 +108,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 showLoading(false);
+                Log.d("WeatherActivity", "Failure: " + t.getMessage());
                 showError();
             }
         });
