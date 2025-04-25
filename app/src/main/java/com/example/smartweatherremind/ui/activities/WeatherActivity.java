@@ -31,8 +31,6 @@ public class WeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        Toast.makeText(this, "WeatherActivity lancé", Toast.LENGTH_SHORT).show();
-
         progressBar = findViewById(R.id.progressBar);
         resultLayout = findViewById(R.id.resultLayout);
         cityText = findViewById(R.id.cityText);
