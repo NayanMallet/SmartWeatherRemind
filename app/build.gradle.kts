@@ -63,5 +63,6 @@ dependencies {
     implementation(libs.dotlottie)
 
     implementation(libs.material)
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.play.services.location)
 }

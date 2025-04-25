@@ -39,6 +39,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         lottieView.load(config);
 
+        lottieView.setScaleX(1.1f);
+        lottieView.setScaleY(1.1f);
         // 3. Boutons
         btnLocation.setOnClickListener(view -> {
             Intent intent = new Intent(this, LocationActivity.class);
