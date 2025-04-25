@@ -24,8 +24,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         // 1. Récupère les vues APRÈS setContentView()
         lottieView = findViewById(R.id.lottieWelcome);
-        btnLocation = findViewById(R.id.btnManual);
-        btnManual = findViewById(R.id.btnLocation);
+        btnManual = findViewById(R.id.btnManual);
+        btnLocation = findViewById(R.id.btnLocation);
 
         Config config = new Config.Builder()
                 .autoplay(true)
