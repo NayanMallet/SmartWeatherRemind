@@ -62,6 +62,29 @@
                 android:text="Condition météo"
                 android:textColor="@color/cloud_white"
                 android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/conditionIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp" />
         </LinearLayout>
     </FrameLayout>
+    <HorizontalScrollView
+        android:id="@+id/hourlyScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:contentDescription="Prévisions horaires"
+        >
+
+        <LinearLayout
+            android:id="@+id/hourlyForecastContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp" />
+    </HorizontalScrollView>
 </LinearLayout>
