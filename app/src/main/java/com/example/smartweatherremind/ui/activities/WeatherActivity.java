@@ -200,6 +200,7 @@ public class WeatherActivity extends AppCompatActivity {
 
             hourlyContainer.addView(item);
         }
+        widgetLayout.setVisibility(View.VISIBLE);
     }
 
 

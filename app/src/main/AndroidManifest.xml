@@ -17,16 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartWeatherRemind"
         tools:targetApi="31">
+        <activity android:name=".ui.activities.DashboardActivity" />
         <activity
             android:name=".ui.activities.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.LocationActivity" />
+<!--        <activity android:name=".ui.activities.ManualSearchActivity" />-->
         <activity android:name=".ui.activities.WeatherActivity" />
     </application>
 

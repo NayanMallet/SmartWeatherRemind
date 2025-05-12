@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.smartweatherremind.ui.activities.WeatherActivity;
+import com.example.smartweatherremind.utils.PreferencesHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationCallback;
@@ -77,6 +78,9 @@ public class LocationActivity extends AppCompatActivity {
     private void launchWeatherActivity(Location location) {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
+
+        // Save location
+        PreferencesHelper.saveLocation(this, latitude, longitude);
 
         Intent intent = new Intent(this, WeatherActivity.class);
         intent.putExtra("latitude", latitude);

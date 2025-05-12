@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.smartweatherremind.R;
+import com.example.smartweatherremind.utils.PreferencesHelper;
 import com.example.smartweatherremind.ui.dialogs.ManualCityDialogFragment;
 import com.lottiefiles.dotlottie.core.model.Config;
 import com.lottiefiles.dotlottie.core.util.DotLottieSource;
@@ -22,9 +23,17 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (PreferencesHelper.hasSavedLocation(this)) {
+            // Redirection directe vers Home/Dashboard
+            Intent intent = new Intent(this, DashboardActivity.class); // Remplace par le nom réel si différent
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_welcome);
 
-        // 1. Récupère les vues APRÈS setContentView()
         lottieView = findViewById(R.id.lottieWelcome);
         btnLocation = findViewById(R.id.btnLocation);
         btnManual = findViewById(R.id.btnManual);
