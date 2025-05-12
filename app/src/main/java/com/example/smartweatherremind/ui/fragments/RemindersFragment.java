@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.smartweatherremind.R;
 import com.example.smartweatherremind.reminder.database.Reminder;
 import com.example.smartweatherremind.reminder.repository.ReminderRepository;
-import com.example.smartweatherremind.reminder.ui.AddReminderDialogFragment;
+import com.example.smartweatherremind.ui.dialogs.AddReminderDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

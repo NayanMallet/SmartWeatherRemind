@@ -20,7 +20,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/glass_background"
         android:padding="24dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.lottiefiles.dotlottie.core.widget.DotLottieAnimation
             android:id="@+id/weatherLottie"

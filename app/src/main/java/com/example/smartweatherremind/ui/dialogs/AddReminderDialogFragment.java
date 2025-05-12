@@ -1,4 +1,4 @@
-package com.example.smartweatherremind.reminder.ui;
+package com.example.smartweatherremind.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -9,9 +9,13 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
 import com.example.smartweatherremind.R;
 import com.example.smartweatherremind.reminder.database.Reminder;
 import com.example.smartweatherremind.reminder.repository.ReminderRepository;
+import com.example.smartweatherremind.ui.activities.DashboardActivity;
+import com.example.smartweatherremind.ui.fragments.RemindersFragment;
 
 import java.util.Calendar;
 
@@ -45,9 +49,15 @@ public class AddReminderDialogFragment extends DialogFragment {
                 reminder.timestamp = selectedTimestamp;
 
                 new ReminderRepository(requireContext()).insert(reminder);
-                if (getParentFragment() instanceof com.example.smartweatherremind.ui.fragments.RemindersFragment) {
-                    ((com.example.smartweatherremind.ui.fragments.RemindersFragment) getParentFragment()).refreshReminders();
-                }
+                requireActivity().runOnUiThread(() -> {
+                    if (getActivity() instanceof DashboardActivity) {
+                        Fragment currentFragment = ((DashboardActivity) getActivity()).getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                        if (currentFragment instanceof RemindersFragment) {
+                            ((RemindersFragment) currentFragment).refreshReminders();
+                        }
+                    }
+                });
+
                 dismiss();
             }
         });

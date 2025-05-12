@@ -3,7 +3,6 @@ package com.example.smartweatherremind.ui.fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,27 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.FrameLayout; // ✅ Remplacer LinearLayout par FrameLayout
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartweatherremind.R;
-import com.example.smartweatherremind.data.model.Hour;
 import com.example.smartweatherremind.data.model.WeatherResponse;
 import com.example.smartweatherremind.data.network.RetrofitInstance;
 import com.example.smartweatherremind.data.network.WeatherApiService;
 import com.example.smartweatherremind.utils.Constants;
 import com.lottiefiles.dotlottie.core.widget.DotLottieAnimation;
 
-import com.example.smartweatherremind.R;
-import com.example.smartweatherremind.data.model.WeatherResponse;
-import com.example.smartweatherremind.data.network.RetrofitInstance;
-import com.example.smartweatherremind.data.network.WeatherApiService;
-import com.example.smartweatherremind.utils.Constants;
 import com.example.smartweatherremind.utils.PreferencesHelper;
-import com.lottiefiles.dotlottie.core.widget.DotLottieAnimation;
 import com.lottiefiles.dotlottie.core.model.Config;
 import com.lottiefiles.dotlottie.core.util.DotLottieSource;
 import com.dotlottie.dlplayer.Mode;
@@ -89,32 +80,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // ✅ Recharge l'animation si une URL a déjà été chargée
         if (lastLottieUrl != null) {
             loadLottieFromUrl(lastLottieUrl);
         }
-    }
-
-
-    private void loadWeatherIcon(String iconPath) {
-        String url = "https:" + iconPath;
-        new Thread(() -> {
-            try {
-                URL imageUrl = new URL(url);
-                Bitmap bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
-                requireActivity().runOnUiThread(() -> conditionIcon.setImageBitmap(bitmap));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
     }
 
     private void fetchWeatherByLocation(double lat, double lon) {
         showLoading(true);
         WeatherApiService service = RetrofitInstance.getApiService();
         String query = lat + "," + lon;
-        Call<WeatherResponse> call = service.getCurrentWeather(Constants.WEATHER_API_KEY, query, Constants.LANGUAGE);
-//        Call<WeatherResponse> call = service.getForecast(Constants.WEATHER_API_KEY, query, 1, Constants.LANGUAGE);
+        Call<WeatherResponse> call = service.getForecast(Constants.WEATHER_API_KEY, query, 1, Constants.LANGUAGE);
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -138,16 +113,15 @@ public class HomeFragment extends Fragment {
         cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
         tempText.setText(weather.current.temp_c + "°C");
         conditionText.setText(weather.current.condition.text);
-        loadWeatherIcon(weather.current.condition.icon);
         loadLottie(weather.current.condition.text);
         widgetLayout.setVisibility(View.VISIBLE);
         hourlyContainer.removeAllViews();
 
-        List<Hour> hourlyData = weather.forecast.forecastday.get(0).hour;
+        List<WeatherResponse.Hour> hourlyData = weather.forecast.forecastday.get(0).hour;
         int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
         for (int i = 0; i < 6; i++) {
-            Hour hourData = (currentHour + i < 24) ? hourlyData.get(currentHour + i)
+            WeatherResponse.Hour hourData = (currentHour + i < 24) ? hourlyData.get(currentHour + i)
                     : hourlyData.get(currentHour + i - 24);
 
             View item = getLayoutInflater().inflate(R.layout.item_hourly_forecast, hourlyContainer, false);

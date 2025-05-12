@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartweatherremind.R;
-import com.example.smartweatherremind.data.model.Hour;
 import com.example.smartweatherremind.data.model.WeatherResponse;
 import com.example.smartweatherremind.data.network.RetrofitInstance;
 import com.example.smartweatherremind.data.network.WeatherApiService;
@@ -166,13 +165,13 @@ public class WeatherActivity extends AppCompatActivity {
         hourlyContainer.removeAllViews();
 
         // Récupère les 6 premières heures de la journée
-        List<Hour> hourlyData = weather.forecast.forecastday.get(0).hour;
+        List<WeatherResponse.Hour> hourlyData = weather.forecast.forecastday.get(0).hour;
 
         for (int i = 0; i < 6; i++) {
 
             int currentHour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
 
-            Hour hourData = currentHour + i < 24 ? hourlyData.get(currentHour + i) : hourlyData.get(currentHour + i - 24);
+            WeatherResponse.Hour hourData = currentHour + i < 24 ? hourlyData.get(currentHour + i) : hourlyData.get(currentHour + i - 24);
 
             View item = getLayoutInflater().inflate(R.layout.item_hourly_forecast, hourlyContainer, false);
 
