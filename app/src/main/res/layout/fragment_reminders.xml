@@ -27,6 +27,6 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/add_reminder"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/accent"
+        app:backgroundTint="@color/mint_leaf"
         app:tint="@android:color/white" />
 </FrameLayout>

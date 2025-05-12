@@ -42,7 +42,6 @@ public class RemindersFragment extends Fragment {
         return view;
     }
 
-    // Remplace loadReminders par cette version
     public void refreshReminders() {
         ReminderRepository repository = new ReminderRepository(requireContext());
         repository.getAllReminders(reminders -> requireActivity().runOnUiThread(() -> {

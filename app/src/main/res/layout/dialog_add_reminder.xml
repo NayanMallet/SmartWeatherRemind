@@ -14,8 +14,8 @@
         android:id="@+id/editTextReminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Votre rappel personnalisé"
         android:backgroundTint="@android:color/darker_gray"
+        android:hint="Que faut-il vous rappeler ?"
         android:padding="12dp" />
 
     <Button

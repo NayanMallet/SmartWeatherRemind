@@ -31,11 +31,9 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private ProgressBar progressBar;
-    private FrameLayout widgetLayout;
+    private FrameLayout widgetLayout; // ✅ Remplacé ici
     private TextView cityCountryText, tempText, conditionText;
     private DotLottieAnimation weatherLottie;
-
-    private String lastLottieUrl = null; // ✅ Ajout d'une variable pour stocker l'URL
 
     @Nullable
     @Override
@@ -44,7 +42,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         progressBar = view.findViewById(R.id.progressBar);
-        widgetLayout = view.findViewById(R.id.widgetLayout);
+        widgetLayout = view.findViewById(R.id.widgetLayout); // ✅ Cast vers FrameLayout
         cityCountryText = view.findViewById(R.id.cityCountryText);
         tempText = view.findViewById(R.id.tempText);
         conditionText = view.findViewById(R.id.conditionText);
@@ -60,15 +58,6 @@ public class HomeFragment extends Fragment {
         }
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // ✅ Recharge l'animation si une URL a déjà été chargée
-        if (lastLottieUrl != null) {
-            loadLottieFromUrl(lastLottieUrl);
-        }
     }
 
     private void fetchWeatherByLocation(double lat, double lon) {
@@ -106,16 +95,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadLottie(String condition) {
-        lastLottieUrl = getLottieUrlForCondition(condition); // ✅ Sauvegarde
-        loadLottieFromUrl(lastLottieUrl); // ✅ Charge depuis l'URL sauvegardée
-    }
-
-    private void loadLottieFromUrl(String url) {
+        String lottieUrl = getLottieUrlForCondition(condition);
         Config config = new Config.Builder()
                 .autoplay(true)
                 .loop(true)
                 .speed(1f)
-                .source(new DotLottieSource.Url(url))
+                .source(new DotLottieSource.Url(lottieUrl))
                 .playMode(Mode.FORWARD)
                 .build();
         weatherLottie.load(config);

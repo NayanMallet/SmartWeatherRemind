@@ -20,7 +20,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/glass_background"
         android:padding="24dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.lottiefiles.dotlottie.core.widget.DotLottieAnimation
             android:id="@+id/weatherLottie"
@@ -64,4 +64,20 @@
                 android:textSize="20sp" />
         </LinearLayout>
     </FrameLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/hourlyScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/hourlyForecastContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp" />
+    </HorizontalScrollView>
 </LinearLayout>
