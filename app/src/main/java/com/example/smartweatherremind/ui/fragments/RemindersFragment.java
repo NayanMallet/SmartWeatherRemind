@@ -31,28 +31,33 @@ public class RemindersFragment extends Fragment {
         remindersContainer = view.findViewById(R.id.remindersContainer);
 
         FloatingActionButton addReminderButton = view.findViewById(R.id.addReminderButton);
-        addReminderButton.setOnClickListener(v -> new AddReminderDialogFragment().show(getParentFragmentManager(), "addReminder"));
+        addReminderButton.setOnClickListener(v -> {
+            AddReminderDialogFragment dialogFragment = new AddReminderDialogFragment();
+            dialogFragment.show(getParentFragmentManager(), "AddReminderDialog");
+        });
 
-        loadReminders();
+
+        refreshReminders();
 
         return view;
     }
 
-    private void loadReminders() {
+    // Remplace loadReminders par cette version
+    public void refreshReminders() {
         ReminderRepository repository = new ReminderRepository(requireContext());
-        repository.getAllReminders(reminders -> {
-            requireActivity().runOnUiThread(() -> {
-                remindersContainer.removeAllViews();
-                if (reminders.isEmpty()) {
-                    addReminderView("Aucun rappel enregistré.");
-                } else {
-                    for (Reminder reminder : reminders) {
-                        addReminderView(reminder.title);
-                    }
+        repository.getAllReminders(reminders -> requireActivity().runOnUiThread(() -> {
+            remindersContainer.removeAllViews();
+            if (reminders.isEmpty()) {
+                addReminderView("Aucun rappel enregistré.");
+            } else {
+                reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
+                for (Reminder reminder : reminders) {
+                    addReminderView(reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp)));
                 }
-            });
-        });
+            }
+        }));
     }
+
 
 
     private void addReminderView(String text) {

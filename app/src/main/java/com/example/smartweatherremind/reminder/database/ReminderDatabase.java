@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.smartweatherremind.reminder.model.ReminderDao;
 
-@Database(entities = {Reminder.class}, version = 1)
+@Database(entities = {Reminder.class}, version = 2)
 public abstract class ReminderDatabase extends RoomDatabase {
 
     private static ReminderDatabase instance;

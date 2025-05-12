@@ -1,20 +1,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/glassDialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="25dp"
+    android:layout_marginVertical="32dp"
+    android:background="@drawable/glass_background"
+    android:elevation="8dp"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@drawable/glass_background">
+    android:padding="24dp">
 
     <EditText
         android:id="@+id/editTextReminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Votre rappel personnalisé" />
+        android:hint="Votre rappel personnalisé"
+        android:backgroundTint="@android:color/darker_gray"
+        android:padding="12dp" />
+
+    <Button
+        android:id="@+id/buttonPickDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choisir la date"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#0CFFFFFF"
+        android:textColor="@color/cloud_white"
+        app:cornerRadius="100dp"
+        app:strokeColor="@color/cloud_white"
+        app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/buttonSaveReminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enregistrer"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#0CFFFFFF"
+        android:textColor="@color/cloud_white"
+        app:cornerRadius="100dp"
+        app:strokeColor="@color/cloud_white"
+        app:strokeWidth="1dp" />
 </LinearLayout>
