@@ -33,8 +33,10 @@ public class RemindersFragment extends Fragment {
         FloatingActionButton addReminderButton = view.findViewById(R.id.addReminderButton);
         addReminderButton.setOnClickListener(v -> {
             AddReminderDialogFragment dialogFragment = new AddReminderDialogFragment();
+            dialogFragment.setOnReminderAddedListener(this::refreshReminders);
             dialogFragment.show(getParentFragmentManager(), "AddReminderDialog");
         });
+
 
 
         refreshReminders();

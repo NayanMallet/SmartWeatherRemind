@@ -18,8 +18,15 @@ public class ReminderRepository {
         db = ReminderDatabase.getInstance(context);
     }
 
-    public void insert(Reminder reminder) {
-        executor.execute(() -> db.reminderDao().insert(reminder));
+    public interface SimpleCallback {
+        void onComplete();
+    }
+
+    public void insert(Reminder reminder, SimpleCallback callback) {
+        executor.execute(() -> {
+            db.reminderDao().insert(reminder);
+            if (callback != null) callback.onComplete();
+        });
     }
 
     public void delete(Reminder reminder) {

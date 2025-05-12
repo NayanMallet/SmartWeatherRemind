@@ -40,13 +40,13 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private ProgressBar progressBar;
-    private FrameLayout widgetLayout; // ✅ Remplacé ici
+    private FrameLayout widgetLayout;
     private TextView cityCountryText, tempText, conditionText;
     private LinearLayout hourlyContainer;
 
     private DotLottieAnimation weatherLottie;
 
-    private String lastLottieUrl = null; // ✅ Ajout d'une variable pour stocker l'URL
+    private String lastLottieUrl = null;
 
     private double latitude = 48.8566; // par défaut : Paris
     private double longitude = 2.3522;
@@ -80,10 +80,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (lastLottieUrl != null) {
-            loadLottieFromUrl(lastLottieUrl);
+        double latitude = PreferencesHelper.getLatitude(requireContext());
+        double longitude = PreferencesHelper.getLongitude(requireContext());
+
+        if (latitude != -1 && longitude != -1) {
+            fetchWeatherByLocation(latitude, longitude);
         }
     }
+
 
     private void fetchWeatherByLocation(double lat, double lon) {
         showLoading(true);
@@ -175,18 +179,6 @@ public class HomeFragment extends Fragment {
                 .build();
         weatherLottie.load(config);
     }
-
-//    private void loadLottie(String condition) {
-//        String lottieUrl = getLottieUrlForCondition(condition);
-//        Config config = new Config.Builder()
-//                .autoplay(true)
-//                .loop(true)
-//                .speed(1f)
-//                .source(new DotLottieSource.Url(lottieUrl))
-//                .playMode(Mode.FORWARD)
-//                .build();
-//        weatherLottie.load(config);
-//    }
 
     private String getLottieUrlForCondition(String condition) {
         condition = condition.toLowerCase();
