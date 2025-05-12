@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.smartweatherremind.R;
-import com.example.smartweatherremind.ui.activities.WeatherActivity;
+import com.example.smartweatherremind.ui.fragments.HomeFragment;
 
 public class ManualCityDialogFragment extends DialogFragment {
 
@@ -48,7 +48,7 @@ public class ManualCityDialogFragment extends DialogFragment {
         buttonSearch.setOnClickListener(v -> {
             String city = editTextCity.getText().toString().trim();
             if (!city.isEmpty()) {
-                Intent intent = new Intent(requireActivity(), WeatherActivity.class);
+                Intent intent = new Intent(requireActivity(), HomeFragment.class);
                 intent.putExtra("city", city);
                 startActivity(intent);
                 dismiss();

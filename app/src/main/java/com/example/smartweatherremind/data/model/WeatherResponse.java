@@ -3,6 +3,7 @@ package com.example.smartweatherremind.data.model;
 public class WeatherResponse {
     public Location location;
     public Current current;
+    public Forecast forecast;
 
     public static class Location {
         public String name;
