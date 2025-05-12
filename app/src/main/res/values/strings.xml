@@ -4,4 +4,5 @@
     <string name="welcome_sub_texte">Pour vous guider, on a juste besoin de savoir où vous êtes.</string>
     <string name="welcome_gps_button">Ma position</string>
     <string name="welcome_manual_button">Entrer votre adresse</string>
+    <string name="add_reminder">Ajouter un rappel</string> <!-- ✅ Ajouté ici -->
 </resources>

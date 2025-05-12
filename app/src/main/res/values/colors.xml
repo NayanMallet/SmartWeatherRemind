@@ -8,6 +8,7 @@
     <color name="mist_grey">#7C8A97</color>
     <color name="pastel_green">#A5D6A7</color>
     <color name="soft_coral">#FFAB91</color>
+    <color name="accent">#6B0FBC</color>
 
     <!-- Variantes pour le dark mode -->
     <color name="mint_leaf_dark">#A3C9A8</color>
