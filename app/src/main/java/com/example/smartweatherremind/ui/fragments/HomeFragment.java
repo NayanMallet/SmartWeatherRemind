@@ -29,6 +29,9 @@ import com.lottiefiles.dotlottie.core.model.Config;
 import com.lottiefiles.dotlottie.core.util.DotLottieSource;
 import com.dotlottie.dlplayer.Mode;
 
+import com.example.smartweatherremind.reminder.repository.ReminderRepository;
+import com.example.smartweatherremind.reminder.database.Reminder;
+
 import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
@@ -43,11 +46,9 @@ public class HomeFragment extends Fragment {
     private FrameLayout widgetLayout;
     private TextView cityCountryText, tempText, conditionText;
     private LinearLayout hourlyContainer;
-
+    private LinearLayout remindersPreviewContainer;
     private DotLottieAnimation weatherLottie;
-
     private String lastLottieUrl = null;
-
     private double latitude = 48.8566; // par défaut : Paris
     private double longitude = 2.3522;
 
@@ -58,19 +59,22 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         progressBar = view.findViewById(R.id.progressBar);
-        widgetLayout = view.findViewById(R.id.widgetLayout); // Pas besoin de cast, c’est une View
+        widgetLayout = view.findViewById(R.id.widgetLayout);
         cityCountryText = view.findViewById(R.id.cityCountryText);
         tempText = view.findViewById(R.id.tempText);
         conditionText = view.findViewById(R.id.conditionText);
         hourlyContainer = view.findViewById(R.id.hourlyForecastContainer);
         weatherLottie = view.findViewById(R.id.weatherLottie);
+        remindersPreviewContainer = view.findViewById(R.id.remindersPreviewContainer);
+
+        if (isAdded()) loadRemindersPreview();
 
         double latitude = PreferencesHelper.getLatitude(requireContext());
         double longitude = PreferencesHelper.getLongitude(requireContext());
 
         if (latitude != -1 && longitude != -1) {
             fetchWeatherByLocation(latitude, longitude);
-        } else {
+        } else if (isAdded()) {
             Toast.makeText(requireContext(), "Aucune localisation enregistrée.", Toast.LENGTH_SHORT).show();
         }
 
@@ -80,12 +84,43 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!isAdded()) return;
         double latitude = PreferencesHelper.getLatitude(requireContext());
         double longitude = PreferencesHelper.getLongitude(requireContext());
 
         if (latitude != -1 && longitude != -1) {
             fetchWeatherByLocation(latitude, longitude);
         }
+    }
+
+    private void loadRemindersPreview() {
+        ReminderRepository repository = new ReminderRepository(requireContext());
+        repository.getAllReminders(reminders -> {
+            if (!isAdded()) return;
+            requireActivity().runOnUiThread(() -> {
+                remindersPreviewContainer.removeAllViews();
+                if (reminders.isEmpty()) {
+                    addReminderPreviewView("Aucun rappel à venir.");
+                } else {
+                    reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
+                    for (int i = 0; i < Math.min(4, reminders.size()); i++) {
+                        Reminder reminder = reminders.get(i);
+                        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
+                        addReminderPreviewView(text);
+                    }
+                }
+            });
+        });
+    }
+
+    private void addReminderPreviewView(String text) {
+        if (!isAdded()) return;
+        View reminderView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.rappel_item, remindersPreviewContainer, false);
+
+        TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
+        reminderTextView.setText(text);
+        remindersPreviewContainer.addView(reminderView);
     }
 
 
@@ -97,6 +132,7 @@ public class HomeFragment extends Fragment {
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if (!isAdded()) return;
                 showLoading(false);
                 if (response.isSuccessful() && response.body() != null) {
                     displayWeather(response.body());
@@ -107,6 +143,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                if (!isAdded()) return;
                 showLoading(false);
                 showError();
             }
@@ -114,6 +151,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void displayWeather(WeatherResponse weather) {
+        if (!isAdded()) return;
         cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
         tempText.setText(weather.current.temp_c + "°C");
         conditionText.setText(weather.current.condition.text);
@@ -146,6 +184,7 @@ public class HomeFragment extends Fragment {
                 try {
                     URL url = new URL(iconUrl);
                     Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    if (!isAdded()) return;
                     requireActivity().runOnUiThread(() -> icon.setImageBitmap(bmp));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -169,10 +208,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadLottie(String condition) {
-        lastLottieUrl = getLottieUrlForCondition(condition); // ✅ Sauvegarde
-        loadLottieFromUrl(lastLottieUrl); // ✅ Charge depuis l'URL sauvegardée
+        lastLottieUrl = getLottieUrlForCondition(condition);
+        loadLottieFromUrl(lastLottieUrl);
     }
-
     private void loadLottieFromUrl(String url) {
         Config config = new Config.Builder()
                 .autoplay(true)
@@ -181,7 +219,9 @@ public class HomeFragment extends Fragment {
                 .source(new DotLottieSource.Url(url))
                 .playMode(Mode.FORWARD)
                 .build();
-        weatherLottie.load(config);
+        if (isAdded()) {
+            weatherLottie.load(config);
+        }
     }
 
     private String getLottieUrlForCondition(String condition) {
@@ -204,12 +244,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void showLoading(boolean isLoading) {
+        if (!isAdded()) return;
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         widgetLayout.setVisibility(isLoading ? View.GONE : View.VISIBLE);
     }
 
     private void showError() {
-        if (!isAdded()) return; // évite le crash
-        Toast.makeText(requireContext(), "Impossible de récupérer la météo.", Toast.LENGTH_SHORT).show();
+        if (isAdded()) {
+            Toast.makeText(requireContext(), "Impossible de récupérer la météo.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
