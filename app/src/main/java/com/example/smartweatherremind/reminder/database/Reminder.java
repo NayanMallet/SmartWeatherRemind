@@ -9,6 +9,6 @@ public class Reminder {
     public int id;
 
     public String title;
-    public long timestamp; // Stockage de la date sous forme de timestamp (millisecondes)
-    public boolean isAutomatic; // true = météo, false = perso
+    public long timestamp;
+    public boolean isAutomatic;
 }
