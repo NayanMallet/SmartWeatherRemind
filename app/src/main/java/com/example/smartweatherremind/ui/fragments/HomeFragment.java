@@ -3,12 +3,14 @@ package com.example.smartweatherremind.ui.fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.example.smartweatherremind.R;
 import com.example.smartweatherremind.data.model.WeatherResponse;
 import com.example.smartweatherremind.data.network.RetrofitInstance;
 import com.example.smartweatherremind.data.network.WeatherApiService;
+import com.example.smartweatherremind.ui.dialogs.AddReminderDialogFragment;
 import com.example.smartweatherremind.utils.Constants;
 import com.lottiefiles.dotlottie.core.widget.DotLottieAnimation;
 
@@ -99,29 +102,78 @@ public class HomeFragment extends Fragment {
             if (!isAdded()) return;
             requireActivity().runOnUiThread(() -> {
                 remindersPreviewContainer.removeAllViews();
+
                 if (reminders.isEmpty()) {
-                    addReminderPreviewView("Aucun rappel à venir.");
+                    // Centrer verticalement le texte si aucun rappel
+                    remindersPreviewContainer.setGravity(Gravity.CENTER);
+                    remindersPreviewContainer.setMinimumHeight(requireView().getHeight() / 3);
+
+                    TextView emptyText = new TextView(requireContext());
+                    emptyText.setText("Aucun rappel à venir.");
+                    emptyText.setTextColor(getResources().getColor(R.color.cloud_white));
+                    emptyText.setTextSize(16);
+                    emptyText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+                    remindersPreviewContainer.addView(emptyText);
                 } else {
+                    // Réinitialiser le centrage
+                    remindersPreviewContainer.setGravity(Gravity.NO_GRAVITY);
+                    remindersPreviewContainer.setMinimumHeight(0);
+
                     reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
                     for (int i = 0; i < Math.min(4, reminders.size()); i++) {
                         Reminder reminder = reminders.get(i);
-                        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
-                        addReminderPreviewView(text);
+                        addReminderPreviewView(reminder);
                     }
                 }
             });
         });
     }
 
-    private void addReminderPreviewView(String text) {
+    private void addReminderPreviewView(Reminder reminder) {
         if (!isAdded()) return;
         View reminderView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.rappel_item, remindersPreviewContainer, false);
 
         TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
+        ImageView menuButton = reminderView.findViewById(R.id.menuButton);
+
+        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
         reminderTextView.setText(text);
+
+        // Ajouter un menu contextuel comme dans RemindersFragment
+        menuButton.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(requireContext(), v);
+            popup.getMenu().add("Modifier");
+            popup.getMenu().add("Supprimer");
+
+            popup.setOnMenuItemClickListener(item -> {
+                String title = item.getTitle().toString();
+                if (title.equals("Modifier")) {
+                    openEditDialog(reminder);
+                } else if (title.equals("Supprimer")) {
+                    deleteReminder(reminder);
+                }
+                return true;
+            });
+
+            popup.show();
+        });
+
         remindersPreviewContainer.addView(reminderView);
     }
+
+    private void openEditDialog(Reminder reminder) {
+        AddReminderDialogFragment dialog = new AddReminderDialogFragment();
+        dialog.setReminderToEdit(reminder);
+        dialog.setOnReminderAddedListener(this::loadRemindersPreview);
+        dialog.show(getParentFragmentManager(), "EditReminderDialog");
+    }
+
+    private void deleteReminder(Reminder reminder) {
+        new ReminderRepository(requireContext()).delete(reminder, this::loadRemindersPreview);
+    }
+
 
 
     private void fetchWeatherByLocation(double lat, double lon) {
