@@ -104,7 +104,6 @@ public class HomeFragment extends Fragment {
                 remindersPreviewContainer.removeAllViews();
 
                 if (reminders.isEmpty()) {
-                    // Centrer verticalement le texte si aucun rappel
                     remindersPreviewContainer.setGravity(Gravity.CENTER);
                     remindersPreviewContainer.setMinimumHeight(requireView().getHeight() / 3);
 
@@ -116,7 +115,6 @@ public class HomeFragment extends Fragment {
 
                     remindersPreviewContainer.addView(emptyText);
                 } else {
-                    // Réinitialiser le centrage
                     remindersPreviewContainer.setGravity(Gravity.NO_GRAVITY);
                     remindersPreviewContainer.setMinimumHeight(0);
 
@@ -141,7 +139,6 @@ public class HomeFragment extends Fragment {
         String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
         reminderTextView.setText(text);
 
-        // Ajouter un menu contextuel comme dans RemindersFragment
         menuButton.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(requireContext(), v);
             popup.getMenu().add("Modifier");

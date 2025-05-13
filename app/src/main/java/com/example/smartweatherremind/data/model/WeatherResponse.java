@@ -11,6 +11,8 @@ public class WeatherResponse {
     public static class Location {
         public String name;
         public String country;
+        public double lat;
+        public double lon;
     }
 
     public static class Current {

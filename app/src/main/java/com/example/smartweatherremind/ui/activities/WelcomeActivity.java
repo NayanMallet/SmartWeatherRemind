@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.smartweatherremind.R;
 import com.example.smartweatherremind.utils.PreferencesHelper;
@@ -25,7 +24,6 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (PreferencesHelper.hasSavedLocation(this)) {
-            // Redirection directe vers Home/Dashboard
             Intent intent = new Intent(this, DashboardActivity.class); // Remplace par le nom réel si différent
             startActivity(intent);
             finish();
@@ -51,7 +49,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
         lottieView.setScaleX(1.1f);
         lottieView.setScaleY(1.1f);
-        // 3. Boutons
         btnLocation.setOnClickListener(view -> {
             Intent intent = new Intent(this, LocationActivity.class);
             startActivity(intent);

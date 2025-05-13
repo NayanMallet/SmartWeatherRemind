@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/welcomeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ocean_blue_background_dark">
 
-    <!-- Lottie fullscreen background -->
     <com.lottiefiles.dotlottie.core.widget.DotLottieAnimation
         android:id="@+id/lottieWelcome"
         android:layout_width="0dp"
@@ -48,7 +46,6 @@
             android:textColor="#E9E8E8"
             android:textSize="14sp" />
 
-        <!-- Bouton : position actuelle -->
         <Button
             android:id="@+id/btnLocation"
             android:layout_width="match_parent"
@@ -65,7 +62,6 @@
             app:strokeColor="@color/cloud_white"
             app:strokeWidth="1dp" />
 
-        <!-- Bouton : ville manuelle -->
         <Button
             android:id="@+id/btnManual"
             android:layout_width="match_parent"

@@ -34,7 +34,6 @@ public class DashboardActivity extends AppCompatActivity {
             return false;
         });
 
-        // Charger par défaut Home
         bottomNav.setSelectedItemId(R.id.nav_home);
     }
 

@@ -78,13 +78,9 @@ public class LocationActivity extends AppCompatActivity {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
-        // Save location
         PreferencesHelper.saveLocation(this, latitude, longitude);
 
-        Intent intent = new Intent(this, WeatherActivity.class);
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-        Log.d("LocationActivity", "Latitude: " + latitude + ", Longitude: " + longitude);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
         finish();
     }

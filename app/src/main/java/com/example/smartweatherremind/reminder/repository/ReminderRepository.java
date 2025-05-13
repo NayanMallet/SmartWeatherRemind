@@ -17,15 +17,13 @@ import java.util.List;
 public class ReminderRepository {
 
     private final ReminderDatabase db;
-    private final ReminderDao reminderDao; // ← tu l'ajoutes ici
+    private final ReminderDao reminderDao;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     public ReminderRepository(Context context) {
         db = ReminderDatabase.getInstance(context);
-        reminderDao = db.reminderDao(); // ← et ici tu l'initialises
+        reminderDao = db.reminderDao();
     }
-
-    // le reste reste inchangé
 
 
     public interface SimpleCallback {
