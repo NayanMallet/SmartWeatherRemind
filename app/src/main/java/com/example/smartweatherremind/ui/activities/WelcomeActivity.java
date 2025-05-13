@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartweatherremind.R;
+import com.example.smartweatherremind.utils.DialogUtils;
 import com.example.smartweatherremind.utils.PreferencesHelper;
 import com.example.smartweatherremind.ui.dialogs.ManualCityDialogFragment;
 import com.lottiefiles.dotlottie.core.model.Config;
@@ -23,6 +26,12 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                DialogUtils.showExitDialog(WelcomeActivity.this);
+            }
+        });
         if (PreferencesHelper.hasSavedLocation(this)) {
             Intent intent = new Intent(this, DashboardActivity.class); // Remplace par le nom réel si différent
             startActivity(intent);
