@@ -29,4 +29,13 @@ public class PreferencesHelper {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return prefs.contains(KEY_LATITUDE) && prefs.contains(KEY_LONGITUDE);
     }
+
+    public static void clearLocation(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        prefs.edit()
+                .remove(KEY_LATITUDE)
+                .remove(KEY_LONGITUDE)
+                .apply();
+    }
+
 }

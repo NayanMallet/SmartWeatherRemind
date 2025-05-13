@@ -42,7 +42,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 .autoplay(true)
                 .speed(1f)
                 .loop(true)
-                // TODO: Try using ‘weather_anim.json’ local lottie => Animation always displayed
                 .source(new DotLottieSource.Url("https://lottie.host/78f6be34-ef93-439c-8d1f-3843fd57c09a/eON7ajOK0h.lottie"))
                 .useFrameInterpolation(false)
                 .playMode(Mode.FORWARD)

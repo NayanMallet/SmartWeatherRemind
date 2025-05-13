@@ -1,6 +1,7 @@
 package com.example.smartweatherremind.ui.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
@@ -59,4 +60,17 @@ public class ManualCityDialogFragment extends DialogFragment {
 
         return dialog;
     }
+
+    private Runnable onDismissListener;
+
+    public void setOnDismissListener(Runnable listener) {
+        this.onDismissListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (onDismissListener != null) onDismissListener.run();
+    }
+
 }

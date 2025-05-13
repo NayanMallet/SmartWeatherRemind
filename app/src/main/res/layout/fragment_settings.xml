@@ -1,13 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ocean_blue_background_dark"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnEditLocation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Paramètres"
+        android:text="Éditer ma localisation"
+        android:backgroundTint="#0CFFFFFF"
         android:textColor="@color/cloud_white"
-        android:textSize="24sp" />
-</FrameLayout>
+        android:layout_marginBottom="16dp"
+        app:cornerRadius="100dp"
+        app:strokeColor="@color/cloud_white"
+        app:strokeWidth="1dp" />
+
+    <Button
+        android:id="@+id/btnClearData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Effacer mes données"
+        android:backgroundTint="#0CFFFFFF"
+        android:textColor="@color/cloud_white"
+        app:cornerRadius="100dp"
+        app:strokeColor="@color/cloud_white"
+        app:strokeWidth="1dp" />
+</LinearLayout>

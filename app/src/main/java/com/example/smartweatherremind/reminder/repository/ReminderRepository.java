@@ -1,6 +1,8 @@
 package com.example.smartweatherremind.reminder.repository;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.example.smartweatherremind.reminder.database.Reminder;
 import com.example.smartweatherremind.reminder.database.ReminderDatabase;
@@ -63,4 +65,14 @@ public class ReminderRepository {
             callback.onResult(list);
         });
     }
+
+    public void deleteAll(Runnable onComplete) {
+        executor.execute(() -> {
+            reminderDao.deleteAll();
+            if (onComplete != null) {
+                new Handler(Looper.getMainLooper()).post(onComplete);
+            }
+        });
+    }
+
 }
