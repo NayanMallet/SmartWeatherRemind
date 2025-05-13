@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="64dp"
+    android:layout_width="72dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
@@ -12,22 +12,23 @@
         android:id="@+id/hourText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10h"
+        android:text="10 h"
         android:textColor="@color/cloud_white"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="6dp" />
 
     <ImageView
         android:id="@+id/conditionIcon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="4dp" /> <!-- Remplace par ton icône -->
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="6dp" />
 
     <TextView
         android:id="@+id/tempText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="22°C"
+        android:text="13°"
         android:textColor="@color/cloud_white"
         android:textSize="14sp" />
 </LinearLayout>

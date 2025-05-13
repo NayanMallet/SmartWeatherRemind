@@ -134,7 +134,11 @@ public class HomeFragment extends Fragment {
             ImageView icon = item.findViewById(R.id.conditionIcon);
             TextView temp = item.findViewById(R.id.tempText);
 
-            hour.setText(hourData.time.split(" ")[1]);
+            String[] parts = hourData.time.split(" ");
+            String hourFormatted = parts[1].split(":")[0] + " h";
+            if (i == 0) hourFormatted = "Maint.";
+            hour.setText(hourFormatted);
+
             temp.setText((int) hourData.temp_c + "°C");
 
             String iconUrl = "https:" + hourData.condition.icon;
