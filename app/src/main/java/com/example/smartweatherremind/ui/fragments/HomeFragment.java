@@ -3,6 +3,7 @@ package com.example.smartweatherremind.ui.fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -204,9 +205,17 @@ public class HomeFragment extends Fragment {
 
     private void displayWeather(WeatherResponse weather) {
         if (!isAdded()) return;
+
         cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
         tempText.setText(weather.current.temp_c + "°C");
-        conditionText.setText(weather.current.condition.text);
+        if (weather.current != null && weather.current.condition != null) {
+            conditionText.setText(weather.current.condition.text);
+            loadLottie(weather.current.condition.text);
+        } else {
+            conditionText.setText("N/A");
+            Log.e("HomeFragment", "Condition météo indisponible");
+        }
+
         loadLottie(weather.current.condition.text);
         widgetLayout.setVisibility(View.VISIBLE);
         hourlyContainer.removeAllViews();

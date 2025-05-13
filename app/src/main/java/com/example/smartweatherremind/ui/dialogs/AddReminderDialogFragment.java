@@ -73,6 +73,7 @@ public class AddReminderDialogFragment extends DialogFragment {
                     reminderToEdit.title = reminderText;
                     reminderToEdit.timestamp = selectedTimestamp;
                     repo.update(reminderToEdit, () -> {
+                        ReminderRepository.scheduleReminder(requireContext(), reminderToEdit); // 🔔 Ajouter ici
                         if (callback != null) callback.onReminderAdded();
                         dismiss();
                     });
@@ -82,6 +83,7 @@ public class AddReminderDialogFragment extends DialogFragment {
                     reminder.timestamp = selectedTimestamp;
                     reminder.isAutomatic = false;
                     repo.insert(reminder, () -> {
+                        ReminderRepository.scheduleReminder(requireContext(), reminder); // 🔔 Ajouter ici
                         if (callback != null) callback.onReminderAdded();
                         dismiss();
                     });

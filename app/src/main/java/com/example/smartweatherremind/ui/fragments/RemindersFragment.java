@@ -50,16 +50,31 @@ public class RemindersFragment extends Fragment {
 
     public void refreshReminders() {
         ReminderRepository repository = new ReminderRepository(requireContext());
+        long now = System.currentTimeMillis();
+
         repository.getAllReminders(reminders -> requireActivity().runOnUiThread(() -> {
             remindersContainer.removeAllViews();
-            if (reminders.isEmpty()) {
+
+            // Supprimer les rappels expirés
+            for (Reminder reminder : reminders) {
+                if (reminder.timestamp < now) {
+                    repository.delete(reminder, null); // suppression silencieuse
+                }
+            }
+
+            // Ne garder que les rappels à venir
+            List<Reminder> upcomingReminders = reminders.stream()
+                    .filter(r -> r.timestamp >= now)
+                    .sorted((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp))
+                    .toList();
+
+            if (upcomingReminders.isEmpty()) {
                 TextView emptyMessage = new TextView(requireContext());
                 emptyMessage.setText("Aucun rappel enregistré.");
                 emptyMessage.setTextColor(getResources().getColor(R.color.cloud_white));
                 emptyMessage.setTextSize(18);
                 emptyMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-                // Centrage dans le conteneur parent
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT
@@ -69,14 +84,13 @@ public class RemindersFragment extends Fragment {
 
                 remindersContainer.addView(emptyMessage);
             } else {
-                reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
-                for (Reminder reminder : reminders) {
+                for (Reminder reminder : upcomingReminders) {
                     addReminderView(reminder);
                 }
             }
-
         }));
     }
+
 
 
     private void deleteReminder(Reminder reminder) {
