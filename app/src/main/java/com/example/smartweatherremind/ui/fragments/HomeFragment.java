@@ -203,8 +203,14 @@ public class HomeFragment extends Fragment {
         if (!isAdded()) return;
         cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
         tempText.setText((int) weather.current.temp_c + "°C");
-        conditionText.setText(weather.current.condition.text);
-        loadLottie(weather.current.condition.text);
+        if (weather.current != null && weather.current.condition != null) {
+            conditionText.setText(weather.current.condition.text);
+            loadLottie(weather.current.condition.text); // ✅ Géré ici
+        } else {
+            conditionText.setText("Condition inconnue");
+            loadLottie(""); // fallback
+        }
+
         widgetLayout.setVisibility(View.VISIBLE);
         hourlyContainer.removeAllViews();
 
