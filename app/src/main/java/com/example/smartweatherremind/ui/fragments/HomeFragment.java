@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment {
     private void displayWeather(WeatherResponse weather) {
         if (!isAdded()) return;
         cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
-        tempText.setText(weather.current.temp_c + "°C");
+        tempText.setText((int) weather.current.temp_c + "°C");
         conditionText.setText(weather.current.condition.text);
         loadLottie(weather.current.condition.text);
         widgetLayout.setVisibility(View.VISIBLE);
@@ -275,20 +275,20 @@ public class HomeFragment extends Fragment {
 
     private String getLottieUrlForCondition(String condition) {
         condition = condition.toLowerCase();
-        if (condition.contains("sunny") || condition.contains("clear")) {
+        if (condition.contains("ensoleillé")) {
             return "https://lottie.host/9a53179a-056b-46ba-bdeb-3c90dc667f32/ij5ca4uL5d.lottie";
-        } else if (condition.contains("rain") || condition.contains("shower")) {
-            return "https://lottie.host/bb5bd8ba-9e13-4e21-b56e-67debe5f42ae/YyU0rVGcdd.lottie";
-        } else if (condition.contains("cloud") || condition.contains("overcast")) {
-            return "https://lottie.host/62f9fa6f-97f7-4748-8d3b-f59b0b7e7c46/ikxqIYBUFM.lottie";
-        } else if (condition.contains("wind")) {
-            return "https://lottie.host/1951fc25-a1a1-4f1d-a515-385bcd1e4e57/hYUKrLKpNf.lottie";
-        } else if (condition.contains("snow") || condition.contains("sleet") || condition.contains("blizzard")) {
-            return "https://lottie.host/e3eed585-8879-4f2a-bf6f-7612b56baea9/N87yEEqmN4.lottie";
-        } else if (condition.contains("thunder") || condition.contains("storm")) {
+        } else if (condition.contains("tonerre") || condition.contains("orage")) {
             return "https://lottie.host/44c14df6-21b2-427e-9648-1515c1782c6f/DNQCDE8bKO.lottie";
+        } else if (condition.contains("pluie")) {
+            return "https://lottie.host/bb5bd8ba-9e13-4e21-b56e-67debe5f42ae/YyU0rVGcdd.lottie";
+        } else if (condition.contains("nuageux")) {
+            return "https://lottie.host/62f9fa6f-97f7-4748-8d3b-f59b0b7e7c46/ikxqIYBUFM.lottie";
+        } else if (condition.contains("vent")) {
+            return "https://lottie.host/1951fc25-a1a1-4f1d-a515-385bcd1e4e57/hYUKrLKpNf.lottie";
+        } else if (condition.contains("neige")) {
+            return "https://lottie.host/e3eed585-8879-4f2a-bf6f-7612b56baea9/N87yEEqmN4.lottie";
         } else {
-            return "https://lottie.host/62f9fa6f-97f7-4748-8d3b-f59b0b7e7c46/ikxqIYBUFM.lottie"; // fallback cloud
+            return "https://lottie.host/62f9fa6f-97f7-4748-8d3b-f59b0b7e7c46/ikxqIYBUFM.lottie";
         }
     }
 

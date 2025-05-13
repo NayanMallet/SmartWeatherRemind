@@ -27,8 +27,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.LocationActivity" />
-<!--        <activity android:name=".ui.activities.ManualSearchActivity" />-->
-        <activity android:name=".ui.activities.WeatherActivity" />
     </application>
 
 </manifest>
