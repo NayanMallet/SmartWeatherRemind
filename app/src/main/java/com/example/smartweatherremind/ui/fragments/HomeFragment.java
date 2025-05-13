@@ -29,6 +29,9 @@ import com.lottiefiles.dotlottie.core.model.Config;
 import com.lottiefiles.dotlottie.core.util.DotLottieSource;
 import com.dotlottie.dlplayer.Mode;
 
+import com.example.smartweatherremind.reminder.repository.ReminderRepository;
+import com.example.smartweatherremind.reminder.database.Reminder;
+
 import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
@@ -43,6 +46,8 @@ public class HomeFragment extends Fragment {
     private FrameLayout widgetLayout;
     private TextView cityCountryText, tempText, conditionText;
     private LinearLayout hourlyContainer;
+
+    private LinearLayout remindersPreviewContainer;
 
     private DotLottieAnimation weatherLottie;
 
@@ -64,6 +69,8 @@ public class HomeFragment extends Fragment {
         conditionText = view.findViewById(R.id.conditionText);
         hourlyContainer = view.findViewById(R.id.hourlyForecastContainer);
         weatherLottie = view.findViewById(R.id.weatherLottie);
+        remindersPreviewContainer = view.findViewById(R.id.remindersPreviewContainer);
+        loadRemindersPreview();
 
         double latitude = PreferencesHelper.getLatitude(requireContext());
         double longitude = PreferencesHelper.getLongitude(requireContext());
@@ -86,6 +93,35 @@ public class HomeFragment extends Fragment {
         if (latitude != -1 && longitude != -1) {
             fetchWeatherByLocation(latitude, longitude);
         }
+    }
+
+    private void loadRemindersPreview() {
+        ReminderRepository repository = new ReminderRepository(requireContext());
+        repository.getAllReminders(reminders -> {
+            requireActivity().runOnUiThread(() -> {
+                remindersPreviewContainer.removeAllViews();
+                if (reminders.isEmpty()) {
+                    addReminderPreviewView("Aucun rappel à venir.");
+                } else {
+                    reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
+                    for (int i = 0; i < Math.min(4, reminders.size()); i++) {
+                        Reminder reminder = reminders.get(i);
+                        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
+                        addReminderPreviewView(text);
+                    }
+                }
+            });
+        });
+    }
+
+    private void addReminderPreviewView(String text) {
+        View reminderView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.rappel_item, remindersPreviewContainer, false);
+
+        TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
+        reminderTextView.setText(text);
+
+        remindersPreviewContainer.addView(reminderView);
     }
 
 
