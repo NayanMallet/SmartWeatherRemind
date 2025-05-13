@@ -4,19 +4,27 @@ import android.content.Context;
 
 import com.example.smartweatherremind.reminder.database.Reminder;
 import com.example.smartweatherremind.reminder.database.ReminderDatabase;
+import com.example.smartweatherremind.reminder.model.ReminderDao;
 
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+
+import java.util.List;
 
 public class ReminderRepository {
 
     private final ReminderDatabase db;
+    private final ReminderDao reminderDao; // ← tu l'ajoutes ici
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     public ReminderRepository(Context context) {
         db = ReminderDatabase.getInstance(context);
+        reminderDao = db.reminderDao(); // ← et ici tu l'initialises
     }
+
+    // le reste reste inchangé
+
 
     public interface SimpleCallback {
         void onComplete();
@@ -29,13 +37,21 @@ public class ReminderRepository {
         });
     }
 
-    public void delete(Reminder reminder) {
-        executor.execute(() -> db.reminderDao().delete(reminder));
+    public void delete(Reminder reminder, Runnable callback) {
+        executor.execute(() -> {
+            reminderDao.delete(reminder);
+            if (callback != null) callback.run();
+        });
     }
 
-    public void update(Reminder reminder) {
-        executor.execute(() -> db.reminderDao().update(reminder));
+
+    public void update(Reminder reminder, Runnable callback) {
+        executor.execute(() -> {
+            db.reminderDao().update(reminder);
+            if (callback != null) callback.run();
+        });
     }
+
 
     public interface Callback {
         void onResult(List<Reminder> reminders);

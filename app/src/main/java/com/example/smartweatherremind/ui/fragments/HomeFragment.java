@@ -209,6 +209,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void showError() {
+        if (!isAdded()) return; // évite le crash
         Toast.makeText(requireContext(), "Impossible de récupérer la météo.", Toast.LENGTH_SHORT).show();
     }
 }

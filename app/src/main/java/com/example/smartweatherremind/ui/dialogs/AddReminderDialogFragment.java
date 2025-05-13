@@ -26,6 +26,13 @@ public class AddReminderDialogFragment extends DialogFragment {
 
     private OnReminderAddedListener callback;
 
+    private Reminder reminderToEdit = null;
+
+    public void setReminderToEdit(Reminder reminder) {
+        this.reminderToEdit = reminder;
+    }
+
+
     public void setOnReminderAddedListener(OnReminderAddedListener callback) {
         this.callback = callback;
     }
@@ -46,22 +53,39 @@ public class AddReminderDialogFragment extends DialogFragment {
         buttonPickDate = dialog.findViewById(R.id.buttonPickDate);
         Button buttonSave = dialog.findViewById(R.id.buttonSaveReminder);
 
+        // ⚠️ Pré-remplissage si modification
+        if (reminderToEdit != null) {
+            editTextReminder.setText(reminderToEdit.title);
+            selectedTimestamp = reminderToEdit.timestamp;
+            String formattedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    .format(new java.util.Date(reminderToEdit.timestamp));
+            buttonPickDate.setText(formattedDate);
+        }
+
         buttonPickDate.setOnClickListener(v -> openDatePicker());
 
         buttonSave.setOnClickListener(v -> {
             String reminderText = editTextReminder.getText().toString().trim();
             if (!reminderText.isEmpty() && selectedTimestamp != -1) {
-                Reminder reminder = new Reminder();
-                reminder.title = reminderText;
-                reminder.isAutomatic = false;
-                reminder.timestamp = selectedTimestamp;
+                ReminderRepository repo = new ReminderRepository(requireContext());
 
-                new ReminderRepository(requireContext()).insert(reminder, () -> {
-                    if (callback != null) {
-                        callback.onReminderAdded();
-                    }
-                    dismiss();
-                });
+                if (reminderToEdit != null) {
+                    reminderToEdit.title = reminderText;
+                    reminderToEdit.timestamp = selectedTimestamp;
+                    repo.update(reminderToEdit, () -> {
+                        if (callback != null) callback.onReminderAdded();
+                        dismiss();
+                    });
+                } else {
+                    Reminder reminder = new Reminder();
+                    reminder.title = reminderText;
+                    reminder.timestamp = selectedTimestamp;
+                    reminder.isAutomatic = false;
+                    repo.insert(reminder, () -> {
+                        if (callback != null) callback.onReminderAdded();
+                        dismiss();
+                    });
+                }
             }
         });
 
