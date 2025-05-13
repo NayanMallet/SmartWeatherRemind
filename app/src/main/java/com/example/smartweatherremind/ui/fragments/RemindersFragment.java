@@ -100,7 +100,7 @@ public class RemindersFragment extends Fragment {
         TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
         ImageView menuButton = reminderView.findViewById(R.id.menuButton);
 
-        String formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(reminder.timestamp));
+        String formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(reminder.timestamp));
         reminderTextView.setText(reminder.title + " - " + formattedDate);
 
         menuButton.setOnClickListener(v -> {

@@ -57,7 +57,7 @@ public class AddReminderDialogFragment extends DialogFragment {
         if (reminderToEdit != null) {
             editTextReminder.setText(reminderToEdit.title);
             selectedTimestamp = reminderToEdit.timestamp;
-            String formattedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            String formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                     .format(new java.util.Date(reminderToEdit.timestamp));
             buttonPickDate.setText(formattedDate);
         }
@@ -98,15 +98,27 @@ public class AddReminderDialogFragment extends DialogFragment {
 
     private void openDatePicker() {
         Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
-            calendar.set(year, month, dayOfMonth, 0, 0);
-            selectedTimestamp = calendar.getTimeInMillis();
 
-            // Mise à jour du texte du bouton avec la date sélectionnée
-            String formattedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    .format(calendar.getTime());
-            buttonPickDate.setText(formattedDate);
+        new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            // Ensuite, on demande l’heure
+            new android.app.TimePickerDialog(requireContext(), (timeView, hourOfDay, minute) -> {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                calendar.set(Calendar.SECOND, 0);
+
+                selectedTimestamp = calendar.getTimeInMillis();
+
+                String formatted = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                        .format(calendar.getTime());
+                buttonPickDate.setText(formatted);
+
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
 
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
+
 }

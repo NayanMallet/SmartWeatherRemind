@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment {
         TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
         ImageView menuButton = reminderView.findViewById(R.id.menuButton);
 
-        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
+        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date(reminder.timestamp));
         reminderTextView.setText(text);
 
         // Ajouter un menu contextuel comme dans RemindersFragment
@@ -214,7 +214,7 @@ public class HomeFragment extends Fragment {
         List<WeatherResponse.Hour> hourlyData = weather.forecast.forecastday.get(0).hour;
         int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 24; i++) {
             WeatherResponse.Hour hourData = (currentHour + i < 24) ? hourlyData.get(currentHour + i)
                     : hourlyData.get(currentHour + i - 24);
 
