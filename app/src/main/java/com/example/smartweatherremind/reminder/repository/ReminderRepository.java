@@ -118,6 +118,8 @@ public class ReminderRepository {
             }
         }
 
+        Log.d("Reminder", "Alarm scheduled for: " + reminder.title + " at " + triggerAtMillis);
+
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 triggerAtMillis,
