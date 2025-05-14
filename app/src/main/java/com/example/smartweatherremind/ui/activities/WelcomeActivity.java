@@ -1,12 +1,22 @@
 package com.example.smartweatherremind.ui.activities;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.smartweatherremind.R;
 import com.example.smartweatherremind.utils.DialogUtils;
@@ -23,6 +33,20 @@ public class WelcomeActivity extends AppCompatActivity {
     private Button btnLocation, btnManual;
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("PERMISSION_CHECK", "Notification permission GRANTED");
+            } else {
+                Log.d("PERMISSION_CHECK", "Notification permission DENIED");
+            }
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -35,6 +59,39 @@ public class WelcomeActivity extends AppCompatActivity {
         if (PreferencesHelper.hasSavedLocation(this)) {
             Intent intent = new Intent(this, DashboardActivity.class); // Remplace par le nom réel si différent
             startActivity(intent);
+            finish();
+            return;
+        }
+
+        onRequestPermissionsResult(1, new String[]{Manifest.permission.POST_NOTIFICATIONS}, new int[]{PackageManager.PERMISSION_GRANTED});
+        Log.d("PERMISSION_CHECK", "Demande de permission POST_NOTIFICATIONS");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        1
+                );
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "reminder_channel",
+                    "Rappels",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription("Canal pour les notifications de rappels");
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+
+        if (PreferencesHelper.hasSavedLocation(this)) {
+            startActivity(new Intent(this, DashboardActivity.class));
             finish();
             return;
         }

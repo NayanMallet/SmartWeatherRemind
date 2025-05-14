@@ -3,6 +3,7 @@ package com.example.smartweatherremind.ui.fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,7 +128,7 @@ public class HomeFragment extends Fragment {
         TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
         ImageView menuButton = reminderView.findViewById(R.id.menuButton);
 
-        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(reminder.timestamp));
+        String text = reminder.title + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date(reminder.timestamp));
         reminderTextView.setText(text);
 
         menuButton.setOnClickListener(v -> {
@@ -191,13 +192,13 @@ public class HomeFragment extends Fragment {
     private void displayWeather(WeatherResponse weather) {
         if (!isAdded()) return;
         cityCountryText.setText(weather.location.name + ", " + trimCountryDisplay(weather.location.country));
-        tempText.setText((int) weather.current.temp_c + "°C");
+        tempText.setText(weather.current.temp_c + "°C");
         if (weather.current != null && weather.current.condition != null) {
             conditionText.setText(weather.current.condition.text);
             loadLottie(weather.current.condition.text);
         } else {
-            conditionText.setText("Condition inconnue");
-            loadLottie(""); // fallback
+            conditionText.setText("N/A");
+            loadLottie("");
         }
 
         widgetLayout.setVisibility(View.VISIBLE);
@@ -206,7 +207,7 @@ public class HomeFragment extends Fragment {
         List<WeatherResponse.Hour> hourlyData = weather.forecast.forecastday.get(0).hour;
         int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 24; i++) {
             WeatherResponse.Hour hourData = (currentHour + i < 24) ? hourlyData.get(currentHour + i)
                     : hourlyData.get(currentHour + i - 24);
 
@@ -255,7 +256,6 @@ public class HomeFragment extends Fragment {
         lastLottieUrl = getLottieUrlForCondition(condition);
         loadLottieFromUrl(lastLottieUrl);
     }
-
     private void loadLottieFromUrl(String url) {
         Config config = new Config.Builder()
                 .autoplay(true)

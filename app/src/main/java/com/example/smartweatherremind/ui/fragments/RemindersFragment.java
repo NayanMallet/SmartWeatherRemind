@@ -52,24 +52,35 @@ public class RemindersFragment extends Fragment {
 
     public void refreshReminders() {
         ReminderRepository repository = new ReminderRepository(requireContext());
+        long now = System.currentTimeMillis();
+
         repository.getAllReminders(reminders -> requireActivity().runOnUiThread(() -> {
             remindersContainer.removeAllViews();
 
-            if (reminders.isEmpty()) {
+            for (Reminder reminder : reminders) {
+                if (reminder.timestamp < now) {
+                    repository.delete(reminder, null);
+                }
+            }
+
+            List<Reminder> upcomingReminders = reminders.stream()
+                    .filter(r -> r.timestamp >= now)
+                    .sorted((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp))
+                    .toList();
+
+            if (upcomingReminders.isEmpty()) {
                 emptyTextView.setVisibility(View.VISIBLE);
                 remindersContainer.setVisibility(View.GONE);
             } else {
                 emptyTextView.setVisibility(View.GONE);
                 remindersContainer.setVisibility(View.VISIBLE);
 
-                reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
-                for (Reminder reminder : reminders) {
+                for (Reminder reminder : upcomingReminders) {
                     addReminderView(reminder);
                 }
             }
         }));
     }
-
 
     private void deleteReminder(Reminder reminder) {
         new ReminderRepository(requireContext()).delete(reminder, this::refreshReminders);
@@ -92,7 +103,7 @@ public class RemindersFragment extends Fragment {
         TextView reminderTextView = reminderView.findViewById(R.id.reminderTextView);
         ImageView menuButton = reminderView.findViewById(R.id.menuButton);
 
-        String formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(reminder.timestamp));
+        String formattedDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(reminder.timestamp));
         reminderTextView.setText(reminder.title + " - " + formattedDate);
 
         menuButton.setOnClickListener(v -> {
