@@ -25,6 +25,7 @@ import java.util.List;
 public class RemindersFragment extends Fragment {
 
     private LinearLayout remindersContainer;
+    private TextView emptyTextView;
 
     @Nullable
     @Override
@@ -33,6 +34,7 @@ public class RemindersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
         remindersContainer = view.findViewById(R.id.remindersContainer);
+        emptyTextView = view.findViewById(R.id.emptyRemindersText);
 
         FloatingActionButton addReminderButton = view.findViewById(R.id.addReminderButton);
         addReminderButton.setOnClickListener(v -> {
@@ -52,29 +54,19 @@ public class RemindersFragment extends Fragment {
         ReminderRepository repository = new ReminderRepository(requireContext());
         repository.getAllReminders(reminders -> requireActivity().runOnUiThread(() -> {
             remindersContainer.removeAllViews();
+
             if (reminders.isEmpty()) {
-                TextView emptyMessage = new TextView(requireContext());
-                emptyMessage.setText("Aucun rappel enregistré.");
-                emptyMessage.setTextColor(getResources().getColor(R.color.cloud_white));
-                emptyMessage.setTextSize(18);
-                emptyMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-                // Centrage dans le conteneur parent
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                );
-                params.gravity = android.view.Gravity.CENTER;
-                emptyMessage.setLayoutParams(params);
-
-                remindersContainer.addView(emptyMessage);
+                emptyTextView.setVisibility(View.VISIBLE);
+                remindersContainer.setVisibility(View.GONE);
             } else {
+                emptyTextView.setVisibility(View.GONE);
+                remindersContainer.setVisibility(View.VISIBLE);
+
                 reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
                 for (Reminder reminder : reminders) {
                     addReminderView(reminder);
                 }
             }
-
         }));
     }
 

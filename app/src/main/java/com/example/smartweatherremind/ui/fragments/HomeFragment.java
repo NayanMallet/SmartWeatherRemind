@@ -52,8 +52,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout remindersPreviewContainer;
     private DotLottieAnimation weatherLottie;
     private String lastLottieUrl = null;
-    private double latitude = 48.8566; // par défaut : Paris
-    private double longitude = 2.3522;
+    private TextView emptyTextView;
 
     @Nullable
     @Override
@@ -69,6 +68,7 @@ public class HomeFragment extends Fragment {
         hourlyContainer = view.findViewById(R.id.hourlyForecastContainer);
         weatherLottie = view.findViewById(R.id.weatherLottie);
         remindersPreviewContainer = view.findViewById(R.id.remindersPreviewContainer);
+        emptyTextView = view.findViewById(R.id.emptyRemindersText);
 
         if (isAdded()) loadRemindersPreview();
 
@@ -104,20 +104,11 @@ public class HomeFragment extends Fragment {
                 remindersPreviewContainer.removeAllViews();
 
                 if (reminders.isEmpty()) {
-                    remindersPreviewContainer.setGravity(Gravity.CENTER);
-                    remindersPreviewContainer.setMinimumHeight(requireView().getHeight() / 3);
-
-                    TextView emptyText = new TextView(requireContext());
-                    emptyText.setText("Aucun rappel à venir.");
-                    emptyText.setTextColor(getResources().getColor(R.color.cloud_white));
-                    emptyText.setTextSize(16);
-                    emptyText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-                    remindersPreviewContainer.addView(emptyText);
+                    emptyTextView.setVisibility(View.VISIBLE);
+                    remindersPreviewContainer.setVisibility(View.GONE);
                 } else {
-                    remindersPreviewContainer.setGravity(Gravity.NO_GRAVITY);
-                    remindersPreviewContainer.setMinimumHeight(0);
-
+                    emptyTextView.setVisibility(View.GONE);
+                    remindersPreviewContainer.setVisibility(View.VISIBLE);
                     reminders.sort((r1, r2) -> Long.compare(r1.timestamp, r2.timestamp));
                     for (int i = 0; i < Math.min(4, reminders.size()); i++) {
                         Reminder reminder = reminders.get(i);
@@ -171,8 +162,6 @@ public class HomeFragment extends Fragment {
         new ReminderRepository(requireContext()).delete(reminder, this::loadRemindersPreview);
     }
 
-
-
     private void fetchWeatherByLocation(double lat, double lon) {
         showLoading(true);
         WeatherApiService service = RetrofitInstance.getApiService();
@@ -205,7 +194,7 @@ public class HomeFragment extends Fragment {
         tempText.setText((int) weather.current.temp_c + "°C");
         if (weather.current != null && weather.current.condition != null) {
             conditionText.setText(weather.current.condition.text);
-            loadLottie(weather.current.condition.text); // ✅ Géré ici
+            loadLottie(weather.current.condition.text);
         } else {
             conditionText.setText("Condition inconnue");
             loadLottie(""); // fallback
@@ -266,6 +255,7 @@ public class HomeFragment extends Fragment {
         lastLottieUrl = getLottieUrlForCondition(condition);
         loadLottieFromUrl(lastLottieUrl);
     }
+
     private void loadLottieFromUrl(String url) {
         Config config = new Config.Builder()
                 .autoplay(true)
